@@ -6,7 +6,7 @@ import umg.edu.gt.desarrollo.proyectocovidstats.model.Province;
 
 import java.time.LocalDate;
 import java.util.List;
-
+//primer
 public interface ReportRepository extends JpaRepository<Report, Long> {
 
     // Método para buscar reportes por provincia y fecha
