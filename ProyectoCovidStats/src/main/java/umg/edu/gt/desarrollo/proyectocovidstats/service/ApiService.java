@@ -6,7 +6,6 @@ import umg.edu.gt.desarrollo.proyectocovidstats.config.AppConfig;
 import umg.edu.gt.desarrollo.proyectocovidstats.util.ApiClient;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class ApiService {
 
@@ -24,32 +23,30 @@ public class ApiService {
     public void fetchCovidData() {
         logger.info("Fetching COVID-19 data...");
 
-        String countryIso = appConfig.getCountryIso();
-        String reportDate = appConfig.getReportDate();
+        String countryIso = appConfig.getCountryIso();  // Asegúrate de que esto esté correctamente configurado
+        String reportDate = appConfig.getReportDate();  // Asegúrate de que esto esté correctamente configurado
 
         logger.info("countryIso desde AppConfig: '{}'", countryIso);
         logger.info("reportDate desde AppConfig: '{}'", reportDate);
 
-
         try {
-            // 🔹 Get regions
-            String regions = apiClient.getRegions();
+            // 🔹 Obtener regiones
+            String regions = apiClient.getRegions(countryIso);  // Cambié 'iso' por 'countryIso'
             logger.info("Regions: " + regions);
-            covidDataService.saveRegions(regions); // ✅ Save to database
+            covidDataService.saveRegions(regions); // ✅ Guardar en la base de datos
 
-            // 🔹 Get Provinces
-            String provinces = apiClient.getProvinces(countryIso);
+            // 🔹 Obtener provincias
+            String provinces = apiClient.getProvinces(countryIso);  // Cambié 'iso' por 'countryIso'
             logger.info("Provinces for {}: {}", countryIso, provinces);
             covidDataService.saveProvinces(provinces, countryIso);
 
-            // 🔹 Get Report
-            String report = apiClient.getReport(countryIso, reportDate);
+            // 🔹 Obtener informes
+            String report = apiClient.getReports(countryIso, reportDate);  // Asegúrate de que este método esté implementado correctamente en ApiClient
             logger.info("Report for {} on {}: {}", countryIso, reportDate, report);
             covidDataService.saveReports(report);
 
         } catch (Exception e) {
-            logger.error("❌ Error consuming the API or saving to the DB:");
-
+            logger.error("❌ Error consuming the API or saving to the DB: {}", e.getMessage());
         }
     }
 }

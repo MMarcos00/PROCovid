@@ -16,7 +16,7 @@ public class ApiClient {
     private static final String API_KEY = "9f0f1ec744mshb600222f9c6063dp15733ajsnc806d7c223e2";
 
     // Method to fetch regions
-    public String getRegions() {
+    public String getRegions(String iso) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -29,7 +29,7 @@ public class ApiClient {
         return response.getBody();  // Return the response body containing regions data
     }
 
-    // You can implement other methods similarly for getProvinces and getReport
+    // Method to fetch provinces
     public String getProvinces(String isoCode) {
         if (isoCode == null || isoCode.trim().isEmpty()) {
             throw new IllegalArgumentException("The ISO code cannot be null or empty");
@@ -39,7 +39,7 @@ public class ApiClient {
         return fetchData(url);
     }
 
-    public String getReport(String isoCode, String date) {
+    public String getReports(String isoCode, String date) {
         if (isoCode == null || isoCode.trim().isEmpty()) {
             throw new IllegalArgumentException("The ISO code cannot be null or empty");
         }
@@ -47,6 +47,7 @@ public class ApiClient {
         String url = "https://covid-19-statistics.p.rapidapi.com/reports?iso=" + isoCode + "&date=" + date;
         return fetchData(url);
     }
+
 
     // Helper method to avoid code repetition for fetching data
     private String fetchData(String url) {

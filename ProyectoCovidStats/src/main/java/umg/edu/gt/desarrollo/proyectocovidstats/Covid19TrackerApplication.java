@@ -11,10 +11,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-
 import umg.edu.gt.desarrollo.proyectocovidstats.config.AppConfig;
 import umg.edu.gt.desarrollo.proyectocovidstats.service.ApiService;
-
 
 @SpringBootApplication
 @EnableConfigurationProperties(AppConfig.class)

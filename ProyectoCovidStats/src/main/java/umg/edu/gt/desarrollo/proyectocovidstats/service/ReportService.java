@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import umg.edu.gt.desarrollo.proyectocovidstats.model.Report;
 import umg.edu.gt.desarrollo.proyectocovidstats.repository.ReportRepository;
+import umg.edu.gt.desarrollo.proyectocovidstats.util.ApiClient;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -15,16 +16,38 @@ public class ReportService {
     private static final Logger logger = LoggerFactory.getLogger(ReportService.class);
 
     private final ReportRepository reportRepository;
+    private final ApiClient apiClient;
 
     // Constructor de la clase
-    public ReportService(ReportRepository reportRepository) {
+    public ReportService(ReportRepository reportRepository, ApiClient apiClient) {
         this.reportRepository = reportRepository;
+        this.apiClient = apiClient;
     }
 
-    // Método para obtener y guardar los informes de una API (lógica no implementada en este ejemplo)
     public void fetchAndSaveReports(String iso) {
-        // Aquí deberías tener implementado el consumo de la API para obtener datos de informes
-        // Posteriormente, puedes guardar esos informes usando reportRepository.saveAll(reports);
+        try {
+            // Fetch reports from the API
+            String reportsJson = apiClient.getReports(iso, "2023-04-15");  // Asegúrate de usar una fecha válida
+            logger.info("Received reports data: {}", reportsJson);
+
+            // Parse the received reports and save them
+            List<Report> reports = parseReports(reportsJson);
+            saveReports(reports);
+        } catch (Exception e) {
+            logger.error("Error fetching and saving reports: {}", e.getMessage());
+        }
+    }
+
+
+    // Método para analizar los informes recibidos de la API
+    public List<Report> parseReports(String json) {
+        // Aquí procesas el JSON de la API para convertirlo en una lista de Report
+        List<Report> reports = new ArrayList<>();
+
+        // Lógica de conversión del JSON a objetos Report (esto dependerá de la estructura de tu API)
+        // ...
+
+        return reports;
     }
 
     // Método para obtener los informes agrupados por provincia y fecha
