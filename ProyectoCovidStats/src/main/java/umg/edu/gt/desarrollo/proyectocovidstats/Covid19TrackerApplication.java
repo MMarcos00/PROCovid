@@ -1,20 +1,20 @@
 package umg.edu.gt.desarrollo.proyectocovidstats;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import umg.edu.gt.desarrollo.proyectocovidstats.config.AppConfig;
 import umg.edu.gt.desarrollo.proyectocovidstats.service.ApiService;
 
 @SpringBootApplication
+@EnableScheduling
 @EnableConfigurationProperties(AppConfig.class)
 public class Covid19TrackerApplication {
 
@@ -25,24 +25,30 @@ public class Covid19TrackerApplication {
     @Value("${app.initialDelay}")
     private long initialDelay;
 
-    @Autowired
     public Covid19TrackerApplication(ApiService apiService) {
         this.apiService = apiService;
     }
 
-    @PostConstruct
+    // Ejecutar una vez después del delay inicial
+    @Scheduled(initialDelayString = "${app.initialDelay}", fixedDelay = Long.MAX_VALUE)
     public void fetchData() {
-        try {
-            logger.info("Waiting {} seconds to start loading data...", initialDelay / 1000);
-            Thread.sleep(initialDelay);  // Using the initialDelay value from the properties
-            logger.info("Starting data loading from the API");
-            apiService.fetchCovidData();
-            logger.info("Data upload completed successfully.");
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            logger.error("Error waiting before executing fetchData: {}", e.getMessage(), e);
+        int retries = 3;
+        while (retries > 0) {
+            try {
+                logger.info("Iniciando carga de datos desde la API...");
+                apiService.fetchCovidData();
+                logger.info("Carga de datos completada exitosamente.");
+                return;
+            } catch (Exception e) {
+                retries--;
+                logger.error("Error ejecutando fetchData, intentos restantes: {}: {}", retries, e.getMessage(), e);
+                if (retries == 0) {
+                    logger.error("Se agotaron los intentos para cargar los datos.");
+                }
+            }
         }
     }
+
 
     public static void main(String[] args) {
         SpringApplication.run(Covid19TrackerApplication.class, args);

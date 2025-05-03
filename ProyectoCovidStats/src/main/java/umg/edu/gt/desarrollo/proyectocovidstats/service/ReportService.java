@@ -50,10 +50,9 @@ public class ReportService {
         return reports;
     }
 
-    // Método para obtener los informes agrupados por provincia y fecha
     public Map<String, Report> getReportsGroupedByProvince(String iso, LocalDate date) {
-        // Utilizamos el método del repositorio para obtener los informes filtrados por código ISO de la provincia y fecha
-        List<Report> rawReports = reportRepository.findByProvince_IsoCodeAndDate(iso, date);
+        // Obtener los informes filtrados por el código de la región (ISO) y la fecha
+        List<Report> rawReports = reportRepository.findByProvince_RegionIsoCodeAndDate(iso, date);
 
         // Usamos un TreeMap para garantizar que las provincias estén ordenadas alfabéticamente
         TreeMap<String, Report> groupedReports = new TreeMap<>();
@@ -75,6 +74,7 @@ public class ReportService {
         // Retornamos el mapa con los informes agrupados por provincia
         return groupedReports;
     }
+
 
     // Método para guardar informes (se asume que ya los informes se obtienen de alguna fuente y se procesan)
     public void saveReports(List<Report> reports) {

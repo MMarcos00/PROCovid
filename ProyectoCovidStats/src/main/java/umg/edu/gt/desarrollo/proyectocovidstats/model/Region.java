@@ -9,8 +9,7 @@ public class Region {
     private String isoCode;
     private String name;
 
-    public Region() {
-    }
+    public Region() {}
 
     public Region(String name, String isoCode) {
         this.name = name;

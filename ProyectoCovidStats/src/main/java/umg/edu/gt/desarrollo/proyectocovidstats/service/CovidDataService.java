@@ -2,8 +2,9 @@ package umg.edu.gt.desarrollo.proyectocovidstats.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import umg.edu.gt.desarrollo.proyectocovidstats.model.Province;
 import umg.edu.gt.desarrollo.proyectocovidstats.model.Region;

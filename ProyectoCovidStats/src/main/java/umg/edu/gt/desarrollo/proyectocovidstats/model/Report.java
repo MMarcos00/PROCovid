@@ -8,6 +8,7 @@ public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private int confirmed;
     private int deaths;
     private int recovered;
@@ -18,8 +19,7 @@ public class Report {
     @JoinColumn(name = "province_id")
     private Province province;
 
-    public Report() {
-    }
+    public Report() {}
 
     public Report(Province province, int confirmed, int deaths, int recovered, int active, LocalDate date) {
         this.province = province;
