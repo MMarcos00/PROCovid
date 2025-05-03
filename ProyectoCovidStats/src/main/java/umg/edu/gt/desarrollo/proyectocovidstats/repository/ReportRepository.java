@@ -11,4 +11,6 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     // Método para buscar reportes por provincia y fecha
     List<Report> findByProvinceAndDate(Province province, LocalDate date);
+    List<Report> findByProvince_IsoCodeAndDate(String isoCode, LocalDate date);
+
 }
